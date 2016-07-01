@@ -1,6 +1,8 @@
 ansible-common-facts
 ===================
 
+[![Build Status](https://travis-ci.org/galexrt/ansible-common-facts.svg?branch=master)](https://travis-ci.org/galexrt/ansible-common-facts)
+
 A collection of useful common facts for Ansible deployments.
 
 Requirements
