@@ -1,7 +1,6 @@
 ---
 - name: Determine if Atomic
-  stat:
-    path: /run/ostree-booted
+  stat: path=/run/ostree-booted
   register: os_tree_check
   changed_when: false
   always_run: yes
@@ -11,12 +10,7 @@
     is_atomic: true
   when: os_tree_check.stat.exists
 
-- name: Get os_version from /etc/os-release
-  raw: "grep '^VERSION_ID=' /etc/os-release | sed s'/VERSION_ID=//'"
-  register: os_version
-  always_run: yes
-
-- name: Get distro name from /etc/os-release
+- name: Determine if CoreOS
   raw: "grep '^NAME=' /etc/os-release | sed s'/NAME=//'"
   register: distro
   always_run: yes
@@ -31,18 +25,26 @@
     bin_dir: "/opt/bin"
   when: is_coreos
 
+- name: Create the directory used to store binaries
+  file: path={{ bin_dir }} state=directory
+
+- name: Create Ansible temp directory
+  file: path={{ ansible_temp_dir }} state=directory
+
 - name: Determine if has rpm
-  stat:
-    path: /usr/bin/rpm
-  register: s
+  stat: path=/usr/bin/rpm
+  register: rpm_check
   changed_when: false
   always_run: yes
 
 - name: Set the has_rpm fact
   set_fact:
     has_rpm: true
-  when: s.stat.exists
+  when: rpm_check.stat.exists
 
-# collect information about if firewalld package is installed
+# collect information about what packages are installed
 - include: rpm.yml
   when: has_rpm
+
+- include: fedora-install.yml
+  when: not is_atomic and ansible_distribution == "Fedora"
