@@ -24,15 +24,16 @@ Example Playbook
 ----------------
 
 An example playbook on how to use this role:
-
-    - hosts: servers
-      roles:
-         - { role: galexrt.common-facts }
+```
+- hosts: servers
+  roles:
+    - { role: galexrt.common-facts }
+```
 
 License
 -------
 
-Apache 2.0 License
+Apache 2.0
 
 Author Information
 ------------------
