@@ -45,6 +45,3 @@
 # collect information about what packages are installed
 - include: rpm.yml
   when: has_rpm
-
-- include: fedora-install.yml
-  when: not is_atomic and ansible_distribution == "Fedora"
