@@ -4,7 +4,7 @@
     path: /run/ostree-booted
   register: os_tree_check
   changed_when: false
-  check_mode: no
+  check_mode: false
 
 - name: Set the is_atomic fact
   set_fact:
@@ -15,7 +15,7 @@
   raw: "grep '^NAME=' /etc/os-release | sed s'/NAME=//'"
   register: distro
   changed_when: false
-  check_mode: no
+  check_mode: false
 
 - name: Set the is_coreos fact
   set_fact:
@@ -42,7 +42,7 @@
     path: /usr/bin/rpm
   register: rpm_check
   changed_when: false
-  check_mode: no
+  check_mode: false
 
 - name: Set the has_rpm fact
   set_fact:
