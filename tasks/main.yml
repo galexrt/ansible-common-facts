@@ -50,5 +50,5 @@
   when: rpm_check.stat.exists
 
 # collect information about what packages are installed
-- include: rpm.yml
+- include_tasks: rpm.yml
   when: has_rpm
