@@ -7,7 +7,7 @@
   check_mode: false
 
 - name: Set the has_firewalld fact
-  set_fact:
+  ansible.builtin.set_fact:
     has_firewalld: true
   when: firewalld_check.rc == 0
 
@@ -19,6 +19,6 @@
   check_mode: false
 
 - name: Set the has_iptables fact
-  set_fact:
+  ansible.builtin.set_fact:
     has_iptables: true
   when: iptables_check.rc == 0

@@ -1,54 +1,55 @@
 ---
 - name: Determine if Atomic
-  stat:
+  ansible.builtin.stat:
     path: /run/ostree-booted
   register: os_tree_check
   changed_when: false
   check_mode: false
 
 - name: Set the is_atomic fact
-  set_fact:
+  ansible.builtin.set_fact:
     is_atomic: true
   when: os_tree_check.stat.exists
 
 - name: Determine if CoreOS
-  raw: "grep '^NAME=' /etc/os-release | sed s'/NAME=//'"
+  ansible.builtin.raw: "grep '^NAME=' /etc/os-release | sed s'/NAME=//'"
   register: distro
   changed_when: false
   check_mode: false
 
 - name: Set the is_coreos fact
-  set_fact:
+  ansible.builtin.set_fact:
     is_coreos: true
   when: "'CoreOS' in distro.stdout"
 
 - name: Set the bin directory path for CoreOS
-  set_fact:
+  ansible.builtin.set_fact:
     bin_dir: "/opt/bin"
   when: is_coreos
 
 - name: Create the directory used to store binaries
-  file:
+  ansible.builtin.file:
     path: "{{ bin_dir }}"
     state: directory
 
 - name: Create Ansible temp directory
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_temp_dir }}"
     state: directory
 
 - name: Determine if has rpm
-  stat:
+  ansible.builtin.stat:
     path: /usr/bin/rpm
   register: rpm_check
   changed_when: false
   check_mode: false
 
 - name: Set the has_rpm fact
-  set_fact:
+  ansible.builtin.set_fact:
     has_rpm: true
   when: rpm_check.stat.exists
 
 # collect information about what packages are installed
-- include_tasks: rpm.yml
+- ansible.builtin.include_tasks:
+    file: rpm.yml
   when: has_rpm
